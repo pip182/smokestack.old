@@ -1,0 +1,134 @@
+.errorlist {
+  @extend %condensed-font;
+  color: #f00;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+
+body {
+  background-color: lighten($color-homestead-gray, 50%);
+}
+
+#sidebar {
+  width: 260px;
+
+  ul,
+  li:not(.brand) {
+    transition: all 0.5s;
+
+    &:hover {
+      background-color: lighten($color-homestead-orange, 30%);
+
+      > a {
+        color: $color-homestead-gray;
+      }
+    }
+  }
+
+  // a[aria-expanded='true'] {
+  //   color: rgb(206, 93, 0);
+  // }
+
+  // ul .show {
+  //   a {
+  //     color: #111;
+  //   }
+  // }
+
+  ul,
+  li {
+    background-color: $color-homestead-gray;
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+
+  li:last-child {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  }
+
+  a {
+    color: #eee;
+    display: block;
+    line-height: 40px;
+    transition: all 0.5s;
+    width: 100%;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  i {
+    margin-right: 1rem;
+  }
+
+  nav {
+    background-color: $color-homestead-gray;
+    border-right: 3px solid darken($color-homestead-gray, 10%);
+    height: 100%;
+    overflow-y: auto;
+    position: fixed;
+    transition: width 0.5s;
+    width: 260px;
+  }
+
+  .brand-logo {
+    font-size: 13pt;
+    text-transform: uppercase;
+  }
+
+  /* Shrinking the sidebar from 250px to 80px and center aligning its content*/
+  &.condensed {
+    text-align: center;
+    width: 90px;
+
+    nav {
+      width: 90px;
+    }
+
+    i {
+      font-size: 18pt;
+      margin-right: 0;
+    }
+
+    .label {
+      display: none;
+    }
+
+    .sidebar-header {
+      h3 {
+        display: none;
+      }
+    }
+
+    .sub-group li {
+      padding-left: 0;
+      padding-right: 0;
+
+      a {
+        display: block;
+        text-align: center;
+        width: 100%;
+      }
+    }
+  }
+
+  .active {
+    background: lighten($color-homestead-orange, 40%);
+    border-color: $color-homestead-orange;
+
+    a {
+      color: $color-homestead-gray;
+    }
+  }
+
+  .btn-link {
+    color: lighten($color-homestead-orange, 20%);
+  }
+
+  .sub-group li {
+    padding-left: 3rem;
+  }
+
+}

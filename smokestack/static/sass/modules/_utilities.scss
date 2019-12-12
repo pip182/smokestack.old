@@ -1,0 +1,9 @@
+// Return the text color (black or white) based on the lightness of the background color.
+@function get-text-color($color) {
+  @if (lightness($color) > 40) {
+    @return black;
+  }
+  @else {
+    @return white;
+  }
+}

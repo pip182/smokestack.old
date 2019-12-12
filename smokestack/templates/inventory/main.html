@@ -1,0 +1,18 @@
+{% extends "inventory/inventory_base.html" %}
+
+
+{% block inner %}
+  {% for i in items %}
+    <div class="row">{{ i.id }}, {{ i.name }}, {{ i.category }}</div>
+  {% endfor %}
+  <div class="mb-3"></div>
+
+  <div id="test-app">
+    <b-button size="sm" @click="toggle">
+      [[ show ? 'Hide' : 'Show' ]] Alert
+    </b-button>
+    <b-alert v-model="show" class="mt-3" dismissible @dismissed="dismissed">
+      Hello [[ name ]]!
+    </b-alert>
+  </div>
+{% endblock inner %}

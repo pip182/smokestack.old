@@ -1,0 +1,99 @@
+{% load extra_tags %}
+
+<!-- Sidebar  -->
+<nav>
+  <ul class="sidebar-header list-group list-group-flush">
+    <li class="list-group-item brand">
+      <button type="button" id="sidebarCollapse" class="btn btn-link float-right">
+        <i class="fas fa-bars"></i>
+      </button>
+      <h3>
+        <a class="brand-logo" href="{% url 'home' %}">
+          SmokeStack
+        </a>
+      </h3>
+    </li>
+  </ul>
+
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item {% active request 'home' %}">
+      <a href="{% url 'home' %}">
+        <i class="fas fa-home"></i>
+        <span class="label">Home</span>
+      </a>
+    </li>
+    {% comment %} <ul class="collapse list-group sub-group" id="homeSubmenu">
+      <li class="list-group-item">
+        <a href="{% url 'home' %}">Home</a>
+      </li>
+      <li class="list-group-item">
+        <a href="{% url 'about' %}">About</a>
+      </li>
+    </ul> {% endcomment %}
+    <ul class="list-group-item {% active request 'inventory/main' %}">
+      <a href="{% url 'inventory:main' %}">
+        <i class="fas fa-boxes"></i>
+        <span class="label">Inventory</span>
+      </a>
+    </ul>
+    <ul class="list-group-item">
+      <a href="#">
+        <i class="fas fa-tasks"></i>
+        <span class="label">Tasks</span>
+      </a>
+    </ul>
+
+    <ul class="list-group-item">
+      <a href="#accountSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+        <i class="fas fa-user"></i>
+        <span class="label">
+          {% if request.user.is_authenticated and request.user.name %}
+            {{ request.user.name }}
+          {% else %}
+            Account
+          {% endif %}
+        </span>
+      </a>
+    </ul>
+    <ul class="collapse list-group sub-group" id="accountSubmenu">
+      {% if request.user.is_authenticated %}
+        <li class="list-group-item">
+          {# URL provided by django-allauth/account/urls.py #}
+          <a href="{% url 'users:detail' request.user.username  %}">
+            <i class="fas fa-id-card"></i>
+            <span class="label">My Profile</span>
+          </a>
+        </li>
+        <li class="list-group-item">
+          {# URL provided by django-allauth/account/urls.py #}
+          <a href="{% url 'account_logout' %}">
+            <i class="fas fa-sign-out-alt"></i>
+            <span class="label">Sign Out</span>
+          </a>
+        </li>
+      {% else %}
+        <li class="list-group-item">
+          {# URL provided by django-allauth/account/urls.py #}
+          <a id="sign-up-link" href="{% url 'account_signup' %}">
+            <i class="fas fa-user-plus"></i>
+            <span class="label">Sign Up</span>
+          </a>
+        </li>
+        <li class="list-group-item">
+          {# URL provided by django-allauth/account/urls.py #}
+          <a id="log-in-link" href="{% url 'account_login' %}">
+            <i class="fas fa-sign-in-alt"></i>
+            <span class="label">Sign In</span>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+    {% if request.user.is_superuser %}
+      <li class="list-group-item"><a href="{% url 'admin:index' %}">
+        <i class="fas fa-tools"></i>
+        <span class="label">Database Admin</span></a>
+      </li>
+    {% endif %}
+  </ul>
+
+</nav>

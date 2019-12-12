@@ -1,0 +1,17 @@
+.condensed-font {
+  @extend %condensed-font;
+}
+
+
+// Generates the .btn-width classes
+@each $w in $button-widths {
+  $i: index($button-widths, $w);
+
+  .btn-width#{$i} {
+    width: #{$w} !important;
+  }
+}
+
+.border-bottom {
+  border-bottom: 1px solid #aaa;
+}

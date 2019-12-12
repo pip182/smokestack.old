@@ -1,0 +1,61 @@
+
+
+// <--------------------------------------------------------------------------->
+//                             Mixins and Placeholders
+// <--------------------------------------------------------------------------->
+
+
+%clearfix {
+  &::after {
+    clear: both;
+    content: '';
+    display: table;
+  }
+}
+
+
+%condensed-font {
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+
+// Materialize span.badge copy
+%badge {
+  border-radius: 2px;
+  box-sizing: border-box;
+  color: #fff;
+  float: right;
+  font-size: 9pt;
+  font-weight: normal;
+  height: 22px;
+  line-height: 22px;
+  margin-left: 14px;
+  min-width: 3rem;
+  padding: 0 6px;
+  text-align: center;
+  text-transform: uppercase;
+
+  &.new {
+    background-color: #008080;
+    border-radius: 2px;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 300;
+  }
+
+  &.new::after {
+    content: ' new';
+  }
+
+  &[data-badge-caption]::after {
+    content: ' ' attr(data-badge-caption);
+  }
+}
+
+
+// Position vertically
+%v-center {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}

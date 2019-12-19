@@ -2,16 +2,24 @@ from .models import Item, Category, Vendor
 from rest_framework import serializers
 
 
-class ItemSerializer(serializers.ModelSerializer):
-    # Represent the relationshit
-    vendor = serializers.StringRelatedField(many=False)
-
+class VendorSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Item
-        fields = ['name', 'price', 'current_quantity', 'vendor']
+        model = Vendor
+        fields = "__all__"
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name']
+        fields = "__all__"
+
+
+class ItemSerializer(serializers.ModelSerializer):
+    # Uncomment get get all vender data instead of just the ID
+    vendor = VendorSerializer()
+    # vendor = serializers.StringRelatedField(many=False)
+
+    class Meta:
+        model = Item
+        fields = "__all__"
+        # exclude = ["date_modified", "date_added"]

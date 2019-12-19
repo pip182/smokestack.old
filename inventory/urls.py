@@ -11,7 +11,7 @@ app_name = "inventory"
 urlpatterns = [
     path("main/", views.main.as_view(), name="main"),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),
 
     # path("~update/", view=user_update_view, name="update"),
     # path("<str:username>/", view=user_detail_view, name="detail"),

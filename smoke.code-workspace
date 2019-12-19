@@ -4,5 +4,11 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"editor.suggest.shareSuggestSelections": true,
+		"editor.tabSize": 2,
+		"editor.wordWrapColumn": 90,
+		"zentabs.maximumOpenedTabs": 10,
+		"python.pythonPath": ".venv/bin/python3"
+	}
 }

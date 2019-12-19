@@ -1,0 +1,70 @@
+#inventory-top-bar {
+  background-color: darken($color-homestead-gray, 5%);
+
+  nav {
+    padding-bottom: 0;
+    padding-top: 1rem;
+  }
+
+  .nav-link {
+    color: #eee;
+
+    &.active {
+      background-color: lighten($color-homestead-gray, 50%);
+      border-bottom: 1px solid lighten($color-homestead-gray, 40%);
+      color: $color-homestead-orange;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover:not(.active),
+    &:active {
+      background-color: lighten($color-homestead-gray, 20%);
+      border: 1px solid darken($color-homestead-gray, 10%);
+      border-bottom: 1px solid lighten($color-homestead-gray, 20%);
+    }
+  }
+
+  .nav-tabs {
+    border-bottom: 0;
+
+    .nav-item {
+      margin-bottom: 0;
+
+      &.show {
+        > a {
+          background-color: lighten($color-homestead-gray, 20%);
+          border: 1px solid rgba(0,0,0,.15);
+          // color: #555;
+        }
+      }
+    }
+  }
+}
+
+
+#inventory-app {
+  table {
+    margin-top: 2rem;
+
+    tr {
+      transition: 0.5s background-color;
+
+      td {
+        border-top: 1px solid lighten($color-homestead-gray, 30%);
+        vertical-align: middle;
+      }
+
+      th {
+        border-bottom: 2px solid lighten($color-homestead-gray, 30%);
+        vertical-align: middle;
+      }
+
+      &:hover {
+        background-color: lighten($color-homestead-gray, 40%);
+      }
+    }
+  }
+}

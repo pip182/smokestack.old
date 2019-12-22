@@ -19,6 +19,7 @@ urlpatterns = [
     path("users/", include("smokestack.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
     path("inventory/", include("inventory.urls", namespace="inventory")),
+    path("tasks/", include("tasks.urls", namespace="tasks")),
     # Your stuff: custom urls includes go here
     path('summernote/', include('django_summernote.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

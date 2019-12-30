@@ -9,17 +9,25 @@ class VendorSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+
+    # def to_representation(self, data):
+    #     res = super(CategorySerializer, self).to_representation(data)
+    #     return {res['id']: res}
+
     class Meta:
         model = Category
         fields = "__all__"
 
 
 class ItemSerializer(serializers.ModelSerializer):
-    # Uncomment get get all vender data instead of just the ID
-    vendor = VendorSerializer()
-    # vendor = serializers.StringRelatedField(many=False)
+    # Custom data
+    vendor_name = serializers.CharField(source='vendor.name', read_only=True)
+    category_name = serializers.CharField(source='category.name', read_only=True)
+
+    # def to_representation(self, data):
+    #     res = super(ItemSerializer, self).to_representation(data)
+    #     return {res['id']: res}
 
     class Meta:
         model = Item
         fields = "__all__"
-        # exclude = ["date_modified", "date_added"]

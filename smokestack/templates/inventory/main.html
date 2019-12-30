@@ -1,8 +1,15 @@
 {% extends "inventory/inventory_base.html" %}
+{% load crispy_forms_tags %}
 
 {% block inner %}
-  <div id="inventory-app" class="mt-5">
-    <b-container fluid>
+<div id="inventory-app" class="mt-5" v-cloak>
+  <div v-if="loaded">
+    <b-container fluid >
+      <b-row>
+        <b-form-group>
+          <b-button variant="primary">New Item</b-button>
+        </b-form-group>
+      </b-row>
       <b-row>
 
         <b-col lg="6" class="my-1">
@@ -41,6 +48,12 @@
         </b-col>
       </b-row>
 
+      <b-row>
+        <b-col>
+
+        </b-col>
+      </b-row>
+
       <!-- Main table element -->
       <b-table show-empty small stacked="md" :items="items" :fields="fields" :current-page="currentPage"
         :per-page="perPage" :filter="filter" :filter-included-fields="filterOn" :sort-by.sync="sortBy"
@@ -52,26 +65,25 @@
 
         <template v-slot:cell(actions)="row">
           <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
-            Info modal
+            Edit Details
           </b-button>
           <b-button size="sm" @click="row.toggleDetails">
-            [[ row.detailsShowing ? 'Hide' : 'Show' ]] Details
+            [[ row.detailsShowing ? 'Hide' : 'Show' ]] Notes
           </b-button>
         </template>
 
         <template v-slot:row-details="row">
-          <b-card>
-            <ul>
-              <li v-for="(value, key) in row.item" :key="key">[[ key ]]: [[ value ]]</li>
-            </ul>
-          </b-card>
+          <b-card v-html="row.item.notes"></b-card>
         </template>
       </b-table>
 
-      <!-- Info modal -->
-      <b-modal :id="infoModal.id" :title="infoModal.title" ok-only @hide="resetInfoModal">
-        <pre>[[ infoModal.content ]]</pre>
+      <!-- Info modal (NOTE: this has to be set to static for summernote to work) -->
+      <b-modal :id="itemEditModal.id" :title="itemEditModal.title" scrollable size="lg"
+                button-size="lg" ok-title="Update" static
+                @hide="resetitemEditModal" @ok="itemUpdate">
+        {% include 'forms/item_edit_form.html' %}
       </b-modal>
     </b-container>
   </div>
+</div>
 {% endblock inner %}

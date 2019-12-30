@@ -12,12 +12,13 @@
   <link rel="stylesheet" href="{% staticfile 'css/vendor/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% staticfile 'css/vendor/bootstrap-vue.min.css' %}">
   <link rel="stylesheet" href="{% staticfile 'css/vendor/fontawesome.min.css' %}">
+  <link rel="stylesheet" href="{% staticfile 'css/vendor/summernote-bs4.min.css' %}">
+  <link rel="stylesheet" href="{% staticfile 'css/vendor/toastr.min.css' %}">
 
   <link href="{% staticfile 'css/styles.css' %}" rel="stylesheet">
 
   {% block css %}
   {% endblock css %}
-
 </head>
 
 <body>
@@ -28,16 +29,6 @@
       </aside>
 
       <main id="page-container" class="col flex-grow-1">
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-              {{ message }}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          {% endfor %}
-        {% endif %}
 
         {% block content %}
           <p>Use this document as a way to quick start any new project.</p>
@@ -62,14 +53,36 @@
     <script src="{% staticfile 'js/vendor/jquery-3.4.1.min.js' %}"></script>
     <script src="{% staticfile 'js/vendor/vue.min.js' %}"></script>
   {% endif %}
-  <script src="{% staticfile 'js/vendor/lodash.min.js' %}"></script>
+
   <script src="{% staticfile 'js/vendor/bootstrap.bundle.min.js' %}"></script>
   <script src="{% staticfile 'js/vendor/bootstrap-vue.min.js' %}"></script>
+  <script src="{% staticfile 'js/vendor/lodash.min.js' %}"></script>
+  <script src="{% staticfile 'js/vendor/summernote-bs4.min.js' %}"></script>
+  <script src="{% staticfile 'js/vendor/toastr.min.js' %}"></script>
 
   <!-- Your stuff: Third-party javascript libraries go here -->
   <script src="{% staticfile 'js/project.js' %}"></script>
-  {% block javascript %}
+  <script>
+    // CSRF token for AJAX requests, the classic way of setting it doesn't work for some
+    // reason, but this does.
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+          if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+          }
+        }
+      });
 
+    // Show alrts
+    $(document).ready(function () {
+      {% if messages %}
+        {% for message in messages %}
+          toastr["{{ message.tags }}"]("{{ message|escapejs }}");
+        {% endfor %}
+      {% endif %}
+    });
+  </script>
+  {% block javascript %}
   {% endblock javascript %}
 </body>
 

@@ -5,6 +5,8 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'items', views.ItemViewSet)
+router.register(r'categories', views.CategoryViewSet)
+router.register(r'vendors', views.VendorViewSet)
 # router.register(r'groups', views.GroupViewSet)
 
 app_name = "inventory"

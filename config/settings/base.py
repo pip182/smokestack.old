@@ -117,6 +117,8 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     'import_export',
     'django_summernote',
+    'adminsortable2',
+    'djmoney',
 ]
 
 LOCAL_APPS = [
@@ -244,6 +246,7 @@ TEMPLATES = [
 ]
 # http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+CRISPY_FAIL_SILENTLY = not DEBUG
 
 # FIXTURES
 # ------------------------------------------------------------------------------
@@ -322,8 +325,12 @@ ACCOUNT_ADAPTER = "smokestack.users.adapters.AccountAdapter"
 # Your stuff...
 # ------------------------------------------------------------------------------
 
+# https://github.com/django-money/django-money
+CURRENCIES = ('USD',)
+
+# https://github.com/summernote/django-summernote
 SUMMERNOTE_THEME = 'bs4'
-# SUMMERNOTE_CONFIG = {
+SUMMERNOTE_CONFIG = {
 #     # Using SummernoteWidget - iframe mode, default
 #     'iframe': True,
 
@@ -333,9 +340,19 @@ SUMMERNOTE_THEME = 'bs4'
 #     # 'iframe': False,
 
 #     # You can put custom Summernote settings
-#     'summernote': {
+    'summernote': {
 #         # As an example, using Summernote Air-mode
-#         'airMode': False,
+        'airMode': False,
+        'toolbar': [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear', 'fontsize']],
+            ['fontname', ['fontname']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture']],
+            ['view', ['fullscreen', 'codeview']],
+        ],
 
 #         # Change editor size
 #         'width': '100%',
@@ -357,7 +374,7 @@ SUMMERNOTE_THEME = 'bs4'
 #             # You have to include theme file in 'css' or 'css_for_inplace' before using it.
 #             'theme': 'monokai',
 #         },
-#     },
+    },
 
 #     # Need authentication while uploading attachments.
 #     # 'attachment_require_authentication': True,
@@ -415,10 +432,11 @@ SUMMERNOTE_THEME = 'bs4'
 #     #     '/some_static_folder/summernote-ext-print.js',
 #     #     '//somewhere_in_internet/summernote-plugin-name.js',
 #     # },
-# }
+}
 
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-#     'PAGE_SIZE': 5
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}

@@ -12,12 +12,12 @@
   <link rel="stylesheet" href="{% staticfile 'css/vendor/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% staticfile 'css/vendor/bootstrap-vue.min.css' %}">
   <link rel="stylesheet" href="{% staticfile 'css/vendor/fontawesome.min.css' %}">
+  <link rel="stylesheet" href="{% staticfile 'css/vendor/summernote-bs4.min.css' %}">
 
   <link href="{% staticfile 'css/styles.css' %}" rel="stylesheet">
 
   {% block css %}
   {% endblock css %}
-
 </head>
 
 <body>
@@ -62,14 +62,26 @@
     <script src="{% staticfile 'js/vendor/jquery-3.4.1.min.js' %}"></script>
     <script src="{% staticfile 'js/vendor/vue.min.js' %}"></script>
   {% endif %}
-  <script src="{% staticfile 'js/vendor/lodash.min.js' %}"></script>
+
   <script src="{% staticfile 'js/vendor/bootstrap.bundle.min.js' %}"></script>
   <script src="{% staticfile 'js/vendor/bootstrap-vue.min.js' %}"></script>
+  <script src="{% staticfile 'js/vendor/lodash.min.js' %}"></script>
+  <script src="{% staticfile 'js/vendor/summernote-bs4.min.js' %}"></script>
 
   <!-- Your stuff: Third-party javascript libraries go here -->
   <script src="{% staticfile 'js/project.js' %}"></script>
+  <script>
+    // CSRF token for AJAX requests, the classic way of setting it doesn't work for some
+    // reason, but this does.
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+          if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+          }
+        }
+      });
+  </script>
   {% block javascript %}
-
   {% endblock javascript %}
 </body>
 

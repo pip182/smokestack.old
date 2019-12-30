@@ -1,6 +1,7 @@
 from django.db.models import (
     Model, CharField, IntegerField, TextField, ForeignKey, ManyToManyField, DateField,
-    DateTimeField, DecimalField,  BooleanField, SET_NULL)
+    DateTimeField, DecimalField,  BooleanField, PositiveIntegerField, SET_NULL)
+from djmoney.models.fields import MoneyField
 from datetime import datetime
 
 HARDWARE = 1
@@ -12,12 +13,14 @@ MISC = 5
 
 class BaseModel(Model):
     name = CharField(max_length=200)
+    order = PositiveIntegerField(default=0, blank=False, null=False)
 
     def __str__(self):
         return self.name
 
     class Meta:
         abstract = True
+        ordering = ['order']
 
 
 class Category(BaseModel):
@@ -69,7 +72,7 @@ class Category(BaseModel):
 
     class Meta:
         verbose_name_plural = "Categories"
-
+        ordering = ['order']
 
 class Department(BaseModel):
 
@@ -89,16 +92,16 @@ class Vendor(BaseModel):
 
 
 class Item(BaseModel):
-    vendor = ForeignKey(Vendor, null=True, on_delete=SET_NULL)
-    category = ForeignKey(Category, null=True, on_delete=SET_NULL)
-    code = CharField(max_length=200, null=True)
+    vendor = ForeignKey(Vendor, null=True, blank=True, on_delete=SET_NULL)
+    category = ForeignKey(Category, null=True, blank=True, on_delete=SET_NULL)
+    code = CharField(max_length=200, null=True, blank=True)
     current_quantity = IntegerField(default=0)
     minimum = IntegerField(default=0)
-    notes = TextField(default="")
-    price = DecimalField(max_digits=10, decimal_places=2, default=0)
+    notes = TextField(default="", blank=True)
+    price = MoneyField(max_digits=10, decimal_places=2, default_currency='USD')
     date_added = DateField(auto_now_add=True)
     date_modified = DateField(auto_now=True)
-    date_expires = DateField(default=datetime.now)
+    date_expires = DateField(default=datetime.now, blank=True, null=True)
 
     @property
     def barcode(self):

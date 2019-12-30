@@ -30,23 +30,34 @@ try:
     from watchdog.observers import Observer
     from watchdog.events import PatternMatchingEventHandler
 except Exception:
+    good_result = False
     print("\nWe need libsass and watchdog, I'll attempt to install them for you...\n")
-    sleep(2)
-    try:
-        subprocess.check_call("sudo -H pip install watchdog libsass", shell=True)
-    except subprocess.CalledProcessError:
+    print("\nYou should install it locally if using a virtual environment or globally if not.\n")
+    while not good_result:
+        result = input("\nShould this be installed (G)lobally or (L)ocally?:")
+        result = result.lower()
+        if result == "g" or result == "l":
+            good_result = True
+        else:
+            print("\nPlease input either 'g' or 'l'.\n")
+    if result == 'g':
         try:
-            print("\nI can't use 'sudo' here, I will try to install it locally then.\n ")
-            subprocess.check_call("pip install watchdog libsass", shell=True)
+            subprocess.check_call("sudo -H pip install watchdog libsass", shell=True)
         except subprocess.CalledProcessError:
-            print("""\nWell that didn't work either... you'll have to install them manually
-                Try running: {0}pip install libsass watchdog{1}\n""".format(
-                colors.fg.lightcyan, colors.reset))
-            print("""{0}{1}If there was a permission error during compilation you will need to run:
-                {2}sudo pip install libsass{3}\n\n""".format(
-                colors.underline, colors.fg.lightred, colors.fg.yellow, colors.reset))
-            input("Press Enter to continue...")
-            quit()
+            try:
+                print("\nI can't use 'sudo' here, I will try to install it locally then.\n ")
+                subprocess.check_call("pip install watchdog libsass", shell=True)
+            except subprocess.CalledProcessError:
+                print("""\nWell that didn't work either... you'll have to install them manually
+                    Try running: {0}pip install libsass watchdog{1}\n""".format(
+                    colors.fg.lightcyan, colors.reset))
+                print("""{0}{1}If there was a permission error during compilation you will need to run:
+                    {2}sudo pip install libsass{3}\n\n""".format(
+                    colors.underline, colors.fg.lightred, colors.fg.yellow, colors.reset))
+                input("Press Enter to continue...")
+                quit()
+    elif result == "l":
+        subprocess.check_call("pip install watchdog libsass", shell=True)
     print("\nRequirements installed! Please re run the script!")
     quit()
 

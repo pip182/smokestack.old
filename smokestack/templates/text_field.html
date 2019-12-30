@@ -1,0 +1,6 @@
+{% load crispy_forms_tags %}
+
+<div class="{% if col_class %}{{ col_class }}{% else %}col{% endif %}">
+  <label for="code" class="col-form-label">{{ label }}</label>
+  <input :type="fieldType({{ model }})" class="form-control" v-model="{{ model }}">
+</div>

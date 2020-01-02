@@ -6,30 +6,5 @@
 {% endblock javascript %}
 
 {% block content %}
-  <div class="row sticky-top" id="inventory-top-bar">
-    <nav class="navbar navbar-expand flex-row w-100">
-      <ul class="nav nav-tabs justify-content-left">
-        <li class="nav-item">
-          <a class="nav-link {% active request 'inventory/main' %}" href="{% url 'inventory:main' %}">Inventory</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Vendors</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-display="static"
-             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Reports
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#"><i class="fas fa-calendar-day"></i>Daily Usage</a>
-            <a class="dropdown-item" href="#"><i class="fas fa-level-down-alt"></i>Low Stock</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#"><i class="fas fa-exclamation-triangle"></i>Rarely Used</a>
-          </div>
-        </li>
-      </ul>
-      <button class="ml-auto btn btn-width4 btn-success mb-1">Check In/Out</button>
-    </nav>
-  </div>
   {% block inner %} {% endblock inner %}
 {% endblock content %}

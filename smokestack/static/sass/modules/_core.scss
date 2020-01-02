@@ -25,21 +25,59 @@
 
 
 #toast-container {
+  .toast {
+    max-width: 75%;
+    opacity: 0.95;
+  }
+
   &.toast-top-center > div {
-    width: auto;
+    width: 75%;
   }
 
   > div {
     box-shadow: none;
     box-shadow: 5;
-    width: auto;
+    width: 75%;
 
     &:hover {
       box-shadow: none;
-      width: auto;
+      width: 75%;
     }
   }
 }
+
+
+// VueJS-Dialog additional styles
+.dg-btn {
+  // text-shadow:
+  //   -1px -1px 0 #444,
+  //   1px -1px 0 #444,
+  //   -1px 1px 0 #444,
+  //   1px 1px 0 #444;
+  transition: background-color 0.5s;
+}
+
+.dg-btn--cancel {
+  background-color: lighten($color-homestead-gray, 5%);
+  border-color: darken($color-homestead-gray, 5%);
+
+  &:hover {
+    background-color: lighten($color-homestead-gray, 10%);
+  }
+}
+
+.dg-danger {
+  .dg-btn--ok {
+    background-color: $color-homestead-orange;
+    border-color: darken($color-homestead-orange, 10%);
+    color: #fff;
+
+    &:hover {
+      background-color: lighten($color-homestead-orange, 10%);
+    }
+  }
+}
+
 
 .dropdown-menu {
   i {
@@ -56,6 +94,23 @@ body {
 
 #sitenav {
   min-width: 220px;
+
+  // Makes top navabar small
+  // Set to '$screen-md' to add a larger navbar on medium screens
+  @media (max-width: $screen-lg) {
+    ul {
+      height: 40px;
+
+      .nav-item> a {
+        line-height: 26px;
+      }
+    }
+
+    .logo > img {
+      max-height: 30px;
+      padding-bottom: 6px;
+    }
+  }
 
   ul,
   li {
@@ -82,18 +137,27 @@ body {
     background-color: $color-homestead-gray;
     height: 100%;
 
-    @media (min-width: $screen-md) {
+    @media (min-width: $screen-lg) {
       border-right: 3px solid darken($color-homestead-gray, 10%);
     }
 
-    @media (max-width: $screen-md) {
+    @media (max-width: $screen-lg) {
       border-bottom: 3px solid darken($color-homestead-gray, 10%);
     }
   }
 
-  .brand-logo {
-    font-size: 13pt;
-    text-transform: uppercase;
+  .logo {
+    font-size: 12pt;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+
+    @media (min-width: $screen-lg) {
+      img {
+        max-height: 38px;
+        padding-bottom: 6px;
+      }
+
+    }
   }
 
   .dropdown-menu {

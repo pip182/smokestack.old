@@ -8,7 +8,7 @@
 		"editor.suggest.shareSuggestSelections": true,
 		"editor.tabSize": 2,
 		"editor.wordWrapColumn": 90,
-		"zentabs.maximumOpenedTabs": 10,
+		"zentabs.maximumOpenedTabs": 6,
 		"python.pythonPath": ".venv/bin/python3"
 	}
 }

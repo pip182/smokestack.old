@@ -1,47 +1,88 @@
 {% load crispy_forms_tags %}
-<form action="/inventory/api/items/" id="item_edit_form" method="POST">
-  <b-container>
-    <b-form-row>
-      <b-col>
-        <label for="code" class="col-form-label">Name</label>
-        <b-form-input v-model="item.name"></b-form-input>
-      </b-col>
-    </b-form-row>
-    <b-form-row>
-      <b-col>
-        <label for="code" class="col-form-label">Price</label>
-        <b-form-input type="number" lazy-formatter :formatter="format_money" step="any" v-model="item.price"></b-form-input>
-      </b-col>
-      <b-col>
-        <label for="code" class="col-form-label">Code</label>
-        <b-form-input v-model="item.code"></b-form-input>
-      </b-col>
-    </b-form-row>
-    <b-form-row>
-      <b-col>
-        <label class="col-form-label">Vendor</label>
-        <b-form-select v-model="item.vendor" :options="vendor_options"></b-form-select>
-      </b-col>
-      <b-col>
-        <label class="col-form-label">Category</label>
-        <b-form-select v-model="item.category" :options="category_options"></b-form-select>
-      </b-col>
-    </b-form-row>
-    <b-form-row>
-      <b-col>
-        <label class="col-form-label">Current Qty</label>
-        <b-form-input type="number" step="1" lazy-formatter :formatter="format_int" v-model="item.current_quantity"></b-form-input>
-      </b-col>
-      <b-col>
-        <label class="col-form-label">Minimum</label>
-        <b-form-input type="number" step="1" lazy-formatter :formatter="format_int" v-model="item.minimum"></b-form-input>
-      </b-col>
-    </b-form-row>
-    <b-form-row>
-      <b-col>
-        <label for="id_notes" class="col-form-label">Notes</label>
-        <b-form-textarea id="id_notes" v-model="item.notes"></b-form-textarea>
-      </b-col>
-    </b-form-row>
-  </b-container>
-</form>
+<validation-observer ref="item_edit_form">
+  <!-- <form action="itemEditModal.url" id="item_edit_form" method="itemEditModal.method"
+        @submit.prevent="handleSubmit(onSubmit)"> -->
+    <b-container>
+      <b-form-row>
+        <b-col>
+          <validation-provider name="Name" rules="required|min:3" v-slot="{ errors,valid }">
+            <label for="id_name" class="col-form-label">Name</label>
+            <b-form-input v-model="item.name" id="id_name" :state="valid"
+              aria-describedby="id_name-live-feedback"></b-form-input>
+            <b-form-invalid-feedback id="id_name-live-feedback">
+              [[ errors[0] ]]
+            </b-form-invalid-feedback>
+          </validation-provider>
+        </b-col>
+      </b-form-row>
+      <b-form-row>
+        <b-col>
+        <validation-provider name="Price" rules="required|min_value:1" v-slot="{ errors,valid }">
+          <label for="id_price" class="col-form-label">Price</label>
+          <b-form-input type="number" lazy-formatter :formatter="format_money" step="any"
+            v-model="item.price" :state="valid" id="id_price" aria-describedby="id_price-live-feedback"></b-form-input>
+          <b-form-invalid-feedback id="id_price-live-feedback">
+            [[ errors[0] ]]
+          </b-form-invalid-feedback>
+        </validation-provider>
+        </b-col>
+        <b-col>
+          <label for="id_code" class="col-form-label">Code</label>
+          <b-form-input v-model="item.code" id="id_code"></b-form-input>
+        </b-col>
+      </b-form-row>
+      <b-form-row>
+        <b-col>
+          <label for="id_vendor" class="col-form-label">Vendor</label>
+          <b-form-select v-model="item.vendor" :options="vendor_options" id="id_vendor"></b-form-select>
+        </b-col>
+        <b-col>
+          <label for="id_category" class="col-form-label">Category</label>
+          <b-form-select v-model="item.category" :options="category_options" id="id_category"></b-form-select>
+        </b-col>
+      </b-form-row>
+      <b-form-row>
+        <b-col>
+          <validation-provider name="Quantity" rules="required|min_value:0" v-slot="{ errors,valid }">
+            <label for="id_quantity" class="col-form-label">Current Qty</label>
+            <b-form-input id="id_quantity" type="number" step="1" lazy-formatter
+              :formatter="format_int" v-model="item.current_quantity" :state="valid"
+              aria-describedby="id_quantity-live-feedback"></b-form-input>
+            <b-form-invalid-feedback id="id_quantity-live-feedback">
+              [[ errors[0] ]]
+            </b-form-invalid-feedback>
+          </validation-provider>
+        </b-col>
+        <b-col>
+          <validation-provider name="Minimum" rules="required|min_value:0" v-slot="{ errors,valid }">
+            <label for="id_minimum" class="col-form-label">Minimum</label>
+            <b-form-input id="id_minimum" type="number" step="1" lazy-formatter
+              :formatter="format_int" v-model="item.minimum" :state="valid"
+              aria-describedby="id_minimum-live-feedback"></b-form-input>
+            <b-form-invalid-feedback id="id_minimum-live-feedback">
+              [[ errors[0] ]]
+            </b-form-invalid-feedback>
+          </validation-provider>
+        </b-col>
+      </b-form-row>
+      <b-form-row>
+        <b-col>
+          <validation-provider name="Expiration" rules="date" v-slot="{ errors,valid }">
+            <label for="id_expires" class="col-form-label">Expiration Date</label>
+            <b-form-input id="id_expires" type="date" v-model="item.date_expires" :state="valid"
+              aria-describedby="id_expires-live-feedback"></b-form-input>
+            <b-form-invalid-feedback id="id_expires-live-feedback">
+              [[ errors[0] ]]
+            </b-form-invalid-feedback>
+          </validation-provider>
+        </b-col>
+      </b-form-row>
+      <b-form-row>
+        <b-col>
+          <label for="id_notes" class="col-form-label">Notes</label>
+          <b-form-textarea id="id_notes" v-model="item.notes"></b-form-textarea>
+        </b-col>
+      </b-form-row>
+    </b-container v-if="item">
+  <!-- </form> -->
+</validation-observer>

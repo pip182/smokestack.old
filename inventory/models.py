@@ -2,25 +2,16 @@ from django.db.models import (
     Model, CharField, IntegerField, TextField, ForeignKey, ManyToManyField, DateField,
     DateTimeField, DecimalField,  BooleanField, PositiveIntegerField, SET_NULL)
 from djmoney.models.fields import MoneyField
+from smokestack.models import BaseModel, Department
 from datetime import datetime
+from adminsortable.fields import SortableForeignKey
+
 
 HARDWARE = 1
 SHEET = 2
 HARDWOOD = 3
 EDGEBANDING = 4
 MISC = 5
-
-
-class BaseModel(Model):
-    name = CharField(max_length=200)
-    order = PositiveIntegerField(default=0, blank=False, null=False)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        abstract = True
-        ordering = ['order']
 
 
 class Category(BaseModel):
@@ -72,14 +63,7 @@ class Category(BaseModel):
 
     class Meta:
         verbose_name_plural = "Categories"
-        ordering = ['order']
-
-
-class Department(BaseModel):
-
-    @property
-    def barcode(self):
-        return "d{}".format(self.id)
+        ordering = ['position']
 
 
 class Vendor(BaseModel):
@@ -87,26 +71,18 @@ class Vendor(BaseModel):
     website = CharField(max_length=200, null=True)
     email = CharField(max_length=200, null=True)
 
-    @property
-    def barcode(self):
-        return "v{}".format(self.id)
-
 
 class Item(BaseModel):
     vendor = ForeignKey(Vendor, null=True, blank=True, on_delete=SET_NULL)
-    category = ForeignKey(Category, null=True, blank=True, on_delete=SET_NULL)
+    category = SortableForeignKey(Category, null=True, blank=True, on_delete=SET_NULL)
     code = CharField(max_length=200, null=True, blank=True)
     current_quantity = IntegerField(default=0)
     minimum = IntegerField(default=0)
     notes = TextField(default="", blank=True)
-    price = MoneyField(max_digits=10, decimal_places=2, default_currency='USD')
+    price = DecimalField(max_digits=10, decimal_places=2)
     date_added = DateField(auto_now_add=True)
     date_modified = DateField(auto_now=True)
-    date_expires = DateField(default=datetime.now, blank=True, null=True)
-
-    @property
-    def barcode(self):
-        return "i{}".format(self.id)
+    date_expires = DateField(blank=True, null=True)
 
 
 class Event(Model):

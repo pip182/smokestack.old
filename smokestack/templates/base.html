@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="{% staticfile 'css/vendor/fontawesome.min.css' %}">
   <link rel="stylesheet" href="{% staticfile 'css/vendor/summernote-bs4.min.css' %}">
   <link rel="stylesheet" href="{% staticfile 'css/vendor/toastr.min.css' %}">
+  <link rel="stylesheet" href="{% staticfile 'css/vendor/vuejs-dialog.min.css' %}">
 
   <link href="{% staticfile 'css/styles.css' %}" rel="stylesheet">
 
@@ -23,8 +24,8 @@
 
 <body>
   <div class="container-fluid">
-    <div class="row min-vh-100 flex-column flex-md-row">
-      <aside class="col-12 col-md-2 p-0 flex-shrink-1" id="sitenav">
+    <div class="row min-vh-100 flex-column flex-lg-row">
+      <aside class="col-12 col-lg-2 p-0 flex-shrink-1" id="sitenav">
         {% include "navbar.html" %}
       </aside>
 
@@ -54,11 +55,21 @@
     <script src="{% staticfile 'js/vendor/vue.min.js' %}"></script>
   {% endif %}
 
+  <!-- https://logaretm.github.io/vee-validate/ -->
+  <script src="{% staticfile 'js/vendor/vee-validate.min.js' %}"></script>
+  <!-- https://github.com/Godofbrowser/vuejs-dialog -->
+  <script src="{% staticfile 'js/vendor/vuejs-dialog.min.js' %}"></script>
+
   <script src="{% staticfile 'js/vendor/bootstrap.bundle.min.js' %}"></script>
   <script src="{% staticfile 'js/vendor/bootstrap-vue.min.js' %}"></script>
+  <!-- https://lodash.com/ -->
   <script src="{% staticfile 'js/vendor/lodash.min.js' %}"></script>
+  <!-- https://summernote.org/getting-started/ -->
   <script src="{% staticfile 'js/vendor/summernote-bs4.min.js' %}"></script>
+  <!-- https://github.com/CodeSeven/toastr -->
   <script src="{% staticfile 'js/vendor/toastr.min.js' %}"></script>
+  <!-- https://github.com/iamkun/dayjs -->
+  <script src="{% staticfile 'js/vendor/dayjs.min.js' %}"></script>
 
   <!-- Your stuff: Third-party javascript libraries go here -->
   <script src="{% staticfile 'js/project.js' %}"></script>
@@ -73,7 +84,8 @@
         }
       });
 
-    // Show alrts
+    // Show alerts
+    /* eslint-disable */
     $(document).ready(function () {
       {% if messages %}
         {% for message in messages %}
@@ -81,6 +93,7 @@
         {% endfor %}
       {% endif %}
     });
+    /* eslint-enable */
   </script>
   {% block javascript %}
   {% endblock javascript %}

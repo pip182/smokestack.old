@@ -4,13 +4,13 @@ from django.contrib import messages
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
+
 # from rest_framework import mixins
 # from rest_framework import generics
 # from rest_framework.views import APIView
-from rest_framework.decorators import action
-
+# from rest_framework.decorators import action
 
 from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 from django import forms
@@ -49,17 +49,37 @@ class ItemViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = Item.objects.all().order_by("order")
+    queryset = Item.objects.all().exclude(active=False).order_by("position")
     serializer_class = ItemSerializer
 
     # def list(self, request):
     #     print("List", request.GET)
 
     def create(self, request):
+        serializer = ItemSerializer(data=request.data)
+        print("Create:", serializer, request)
+        if serializer.is_valid():
+            print("IS VALID!", serializer)
+            self.perform_create(serializer)
+            # headers = self.get_success_headers(serializer.data)
+            return Response({'success': True, 'type': 'new', 'item': serializer.data})
+        else:
+            print(serializer.errors)
+            errors = serializer.errors
+            return Response({'success': False, 'errors': errors, 'item': serializer.data})
         print("Create", request.POST)
+
+    def perform_create(self, serializer):
+        serializer.validated_data['position'] = Item().next_position
+        serializer.save()
 
     def retrieve(self, request, pk=None):
         print("Retrieve", request.POST)
+
+    def destroy(self, request, pk=None):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response({'success': True})
 
     def update(self, request, pk=None):
         instance = self.get_object()
@@ -69,7 +89,7 @@ class ItemViewSet(viewsets.ModelViewSet):
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data)
+        return Response({'success': True, 'item': serializer.data})
 
 
 class CategoryViewSet(viewsets.ModelViewSet):

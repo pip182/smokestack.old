@@ -1,6 +1,32 @@
-/* Project specific Javascript goes here. */
+
+// Vue configuration and extra stuff.
 Vue.options.delimiters = ['[[', ']]'];
-// Vue.config.devtools = true;
+Vue.config.devtools = true;
+Vue.use(VuejsDialog.main.default);
+
+// Vue Validator
+Vue.use(VeeValidate, {
+  // // This is the default
+  // inject: true,
+  // // Important to name this something other than 'fields'
+  // fieldsBagName: 'veeFields',
+  // // This is not required but avoids possible naming conflicts
+  // errorBagName: 'veeErrors'
+});
+Vue.component('validation-provider', VeeValidate.ValidationProvider);
+Vue.component('validation-observer', VeeValidate.ValidationObserver);
+
+// Vue currency filter
+Vue.filter('currency', function (value) {
+  return currency.format(value);
+});
+
+// Vue filter to capitalize first letter.
+Vue.filter('capitalize', function (value) {
+  if (!value) return '';
+  value = value.toString();
+  return value.charAt(0).toUpperCase() + value.slice(1);
+});
 
 
 // What buttons should show on the summernote text editor, for the admin page you need to
@@ -40,8 +66,8 @@ toastr.options = {
   "onclick": null,
   "showDuration": "300",
   "hideDuration": "1000",
-  "timeOut": "500000",
-  "extendedTimeOut": "500000",
+  "timeOut": "4000",
+  "extendedTimeOut": "4000",
   "showEasing": "swing",
   "hideEasing": "linear",
   "showMethod": "fadeIn",
@@ -59,6 +85,9 @@ function detectIE() {
 
 
 $(document).ready(function () {
+  $('[data-toggle="tooltip"]').tooltip({
+    delay: 500, container: 'body'
+  })
 
   // Makes site unusable with IE since it will only cause problems.
   if (detectIE()) {

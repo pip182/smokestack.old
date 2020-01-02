@@ -2,16 +2,43 @@
 {% load crispy_forms_tags %}
 
 {% block inner %}
-<div id="inventory-app" class="mt-5" v-cloak>
+<div id="inventory-app" v-cloak>
   <div v-if="loaded">
+    {% include 'inventory/tab_bar.html' %}
     <b-container fluid >
-      <b-row>
-        <b-form-group>
-          <b-button variant="primary">New Item</b-button>
-        </b-form-group>
-      </b-row>
-      <b-row>
+      <!-- Main table element -->
+      <b-table id="item-list" show-empty small :items="items" :fields="fields"
+        primary-key="position" :current-page="currentPage" :per-page="perPage" :filter="filter"
+        :tbody-transition-props="transProps" :filter-included-fields="filterOn"
+        :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection"
+        @filtered="onFiltered" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
+        <template v-slot:cell(name)="row">
+          [[ row.item.name ]]
+        </template>
 
+        <template v-slot:cell(actions)="row">
+          <b-button-group>
+            <b-button size="sm" @click="info(row.item, row.index, $event.target)">
+              Edit <span class="d-hide-lg">Details</span>
+            </b-button>
+            <b-button v-if="row.item.notes" size="sm" @click="row.toggleDetails">
+              [[ row.detailsShowing ? 'Hide' : 'Show' ]] Notes
+            </b-button>
+            <b-button size="sm" variant="danger" :data-item="row.item.id" loader="true"
+              v-confirm="{customClass: 'dg-danger', okText: 'Just delete it!', ok: deleteItem,
+                          animation: 'bounce', cancelText: 'Nevermind',
+                          message: 'Are you sure you want to delete this?'}">
+              Delete
+            </b-button>
+          </b-button-group>
+        </template>
+
+        <template v-slot:row-details="row">
+          <b-card v-html="row.item.notes"></b-card>
+        </template>
+      </b-table>
+
+      <b-row>
         <b-col lg="6" class="my-1">
           <b-form-group label="Filter" label-cols-sm="3" label-align-sm="right" label-size="sm" label-for="filterInput"
             class="mb-0">
@@ -48,39 +75,10 @@
         </b-col>
       </b-row>
 
-      <b-row>
-        <b-col>
-
-        </b-col>
-      </b-row>
-
-      <!-- Main table element -->
-      <b-table show-empty small stacked="md" :items="items" :fields="fields" :current-page="currentPage"
-        :per-page="perPage" :filter="filter" :filter-included-fields="filterOn" :sort-by.sync="sortBy"
-        :sort-desc.sync="sortDesc" :sort-direction="sortDirection" @filtered="onFiltered"
-        @row-hovered="rowHovered">
-        <template v-slot:cell(name)="row">
-          [[ row.item.name ]]
-        </template>
-
-        <template v-slot:cell(actions)="row">
-          <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
-            Edit Details
-          </b-button>
-          <b-button size="sm" @click="row.toggleDetails">
-            [[ row.detailsShowing ? 'Hide' : 'Show' ]] Notes
-          </b-button>
-        </template>
-
-        <template v-slot:row-details="row">
-          <b-card v-html="row.item.notes"></b-card>
-        </template>
-      </b-table>
-
       <!-- Info modal (NOTE: this has to be set to static for summernote to work) -->
       <b-modal :id="itemEditModal.id" :title="itemEditModal.title" scrollable size="lg"
-                button-size="lg" ok-title="Update" static
-                @hide="resetitemEditModal" @ok="itemUpdate">
+                button-size="lg" :ok-title="itemEditModal.buttonText" static
+                @hide="resetitemEditModal" @ok="onSubmit">
         {% include 'forms/item_edit_form.html' %}
       </b-modal>
     </b-container>

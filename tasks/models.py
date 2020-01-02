@@ -27,7 +27,7 @@ class Task(Model):
     assigned_by = ForeignKey(User, on_delete=SET_NULL, blank=True, null=True, related_name="delegated")
     assigned_to = ForeignKey(User, on_delete=SET_NULL, blank=True, null=True)
     date_due = DateField(blank=True, null=True)
-    order = IntegerField(default=0)
+    position = IntegerField(default=0)
     points = IntegerField(default=0)
     priority = IntegerField(default=0)
     status = IntegerField(default=0, choices=[
@@ -52,7 +52,7 @@ class Task(Model):
 
 
 class TaskCategory(Model):
-    order = IntegerField(default=0)
+    position = IntegerField(default=0)
     tasks = ManyToManyField(Task)
     title = TextField(blank=False, null=False)
 

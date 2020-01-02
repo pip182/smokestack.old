@@ -19,7 +19,7 @@ class TaskAdmin(admin.ModelAdmin):
         'assigned_by',
         'assigned_to',
         'date_due',
-        'order',
+        'position',
         'points',
         'priority',
         'progress',
@@ -32,5 +32,5 @@ class TaskAdmin(admin.ModelAdmin):
 
 @admin.register(TaskCategory)
 class TaskCategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'order', 'title')
+    list_display = ('id', 'position', 'title')
     raw_id_fields = ('tasks',)

@@ -6,6 +6,10 @@
     padding-top: 1rem;
   }
 
+  .action-buttons {
+    margin-top: 10px;
+  }
+
   .nav-link {
     color: #eee;
 
@@ -36,7 +40,7 @@
       &.show {
         > a {
           background-color: lighten($color-homestead-gray, 20%);
-          border: 1px solid rgba(0,0,0,.15);
+          border: 1px solid rgba(0, 0, 0, 0.15);
           // color: #555;
         }
       }
@@ -66,9 +70,15 @@
         background-color: lighten($color-homestead-gray, 40%);
       }
     }
+
+    .item-move {
+      transition: transform 0.5s;
+    }
+
   }
 
   .details {
     list-style: none;
   }
+
 }

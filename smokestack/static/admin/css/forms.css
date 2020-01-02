@@ -2,16 +2,13 @@
 
 /* FORM ROWS */
 
+.form-row.errors label.required {
+  color: red;
+}
+
 .note-editor.note-frame {
   border: 1px solid #a9a9a9;
   border-radius: 0;
-}
-
-.field-price select {
-  height: 26px;
-  margin-left: 5px;
-  margin-top: 2px;
-  padding-top: 3px;
 }
 
 .field-price input {
@@ -20,15 +17,16 @@
 
 .related-widget-wrapper select {
   width: 182px;
+  background-color: #fff;
 }
 
 .related-widget-wrapper-link img {
-  height: 24px;
-  width: 24px;
+  height: 18px;
+  width: 18px;
 }
 
 input {
-  width: 270px;
+  /* width: 270px; */
 }
 
 .fieldBox {
@@ -111,7 +109,7 @@ form ul.inline li {
   word-wrap: break-word;
 }
 
-.aligned label:not(.vCheckboxLabel):after {
+.aligned label:not(.vCheckboxLabel)::after {
   content: '';
   display: inline-block;
   height: 26px;
@@ -155,15 +153,19 @@ form .aligned ul.radiolist {
 form .aligned p.help,
 form .aligned div.help {
   clear: left;
-  margin-left: 160px;
+  margin-left: 0;
   margin-top: 0;
+  padding-left: 10px;
+}
+
+.form-row .help {
   padding-left: 10px;
 }
 
 form .aligned label + p.help,
 form .aligned label + div.help {
   margin-left: 0;
-  padding-left: 0;
+  /* padding-left: 0; */
 }
 
 form .aligned p.help:last-child,
@@ -178,7 +180,7 @@ form .aligned select + p.help,
 form .aligned input + div.help,
 form .aligned textarea + div.help,
 form .aligned select + div.help {
-  margin-left: 160px;
+  margin-left: 0;
   padding-left: 10px;
 }
 
@@ -361,7 +363,7 @@ body.popup .submit-row {
 }
 
 .vCheckboxField {
-  border: none;
+  border: 0;
 }
 
 .vDateField,
@@ -393,6 +395,10 @@ body.popup .submit-row {
 
 .module table .vPositiveSmallIntegerField {
   width: 2.2em;
+}
+
+.vTextField {
+  /* padding: 8px 6px !important; */
 }
 
 .vTextField,
@@ -560,4 +566,129 @@ form .related-widget-wrapper ul {
 
 .clearable-file-input input {
   margin-top: 0;
+}
+
+
+/*<--------------------------------------------------------------------------->
+                         Switch CSS
+<--------------------------------------------------------------------------->*/
+
+
+.switch {
+  display: inline-block;
+  height: 22px;
+  position: relative;
+  top: 3px;
+  width: 34px !important;
+}
+
+.switch.small {
+  height: 18px;
+  top: -4px;
+  width: 28px !important;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  height: 0;
+  opacity: 0;
+  width: 0;
+}
+
+/* The slider */
+.switch .slider {
+  background-color: #fff;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  opacity: 0.9;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.switch .state-text::after {
+  bottom: 3px;
+  content: 'Off';
+  font-weight: bold;
+  left: 45px;
+  position: relative;
+}
+
+.switch.small .state-text::after {
+  display: none;
+}
+
+.switch .slider::before {
+  background-color: rgb(240, 111, 101);
+  border: 1px outset rgb(194, 117, 117);
+  /* border-right: 1px inset rgb(136, 83, 83); */
+  bottom: 1px;
+  content: '';
+  height: 20px;
+  left: 1px;
+  position: absolute;
+  transition: 0.4s;
+  transition-timing-function: ease;
+  width: 20px;
+}
+
+.switch .slider:hover::before {
+  background-color: rgb(248, 173, 168);
+}
+
+.switch.small .slider::before {
+  height: 12px;
+  width: 12px;
+
+}
+
+.switch input:checked+.slider {
+  /* background-color: #daf8db; */
+}
+
+.switch input:focus+.slider {
+  /* box-shadow: 0 0 4px #0c9e13; */
+}
+
+.switch input:checked+.slider::before {
+  background-color: rgb(72, 185, 78);
+  border: 1px outset rgb(85, 190, 92);
+  /* border-right: 1px inset rgb(53, 121, 57); */
+  transform: translateX(18px);
+}
+
+.switch input:checked+.slider:hover::before {
+  background-color: rgb(117, 209, 121);
+}
+
+.switch.small input:checked+.slider::before {
+  transform: translateX(10px);
+}
+
+.switch input:checked~.state-text::after {
+  bottom: 3px;
+  content: 'On';
+  font-weight: bold;
+  left: 45px;
+  position: relative;
+}
+
+/* Rounded sliders */
+.switch .slider.round {
+  border: 1px outset #bbb;
+  border-radius: 34px;
+}
+
+.switch.small .slider.round {
+  border-radius: 4px;
+}
+
+.switch .slider.round::before {
+  /* border: 1px solid #444; */
+  border-radius: 50%;
+}
+
+.switch.small .slider.round::before {
+  border-radius: 4px;
 }

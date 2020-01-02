@@ -10,3 +10,5 @@ smokestack/media/django-summernote/
 .env
 
 .vscode/settings.json
+
+jsconfig.json

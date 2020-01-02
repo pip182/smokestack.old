@@ -117,7 +117,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     'import_export',
     'django_summernote',
-    'adminsortable2',
+    'adminsortable',
     'djmoney',
 ]
 
@@ -258,7 +258,9 @@ FIXTURE_DIRS = (str(APPS_DIR.path("fixtures")),)
 # https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-httponly
 SESSION_COOKIE_HTTPONLY = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
-CSRF_COOKIE_HTTPONLY = True
+# I think this has to be disabled or django-sortable-admin will not work.
+# https://github.com/alsoicode/django-admin-sortable
+# CSRF_COOKIE_HTTPONLY = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-browser-xss-filter
 SECURE_BROWSER_XSS_FILTER = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options

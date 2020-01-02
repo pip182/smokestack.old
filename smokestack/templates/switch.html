@@ -1,0 +1,6 @@
+<label class="switch {{ widget.attrs.extra_class }}">
+  <input type="checkbox" id="{{ widget.id }}" name="{{ widget.name }}" {% if widget.value == "True" %} checked {% endif %}>
+  <span class="slider round"></span>
+  <span class="state-text"></span>
+</label>
+<div class="help">{{ widget.attrs.help }}</div>

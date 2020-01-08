@@ -99,7 +99,7 @@ var inventoryApp = new Vue({
       });
       return options;
     },
-    max_postion: function() {
+    max_position: function() {
       return _.maxBy(this.items, function(i) {
         return i.position;
       }).position;
@@ -168,6 +168,25 @@ var inventoryApp = new Vue({
         toolbar: summernote_toolbar,
         height: 150});
       $("#id_notes").summernote("code", item.notes || "");
+    },
+    updateItems(items) {
+      let vue = this;
+      console.log(vue.items);
+
+      // Takes a list of item objects and updates them one at a time
+      // TODO: Bulk update rather than one at a time.
+      // $.ajax({
+      //   url: "/inventory/api/items/",
+      //   method: 'post',
+      //   data: vue.items})
+      // .done(function (data) {});
+      _.forEach(items, function(i) {
+        $.ajax({
+          url: "/inventory/api/items/" + i.id + "/",
+          method: 'put',
+          data: i})
+        .done(function (data) {});
+      });
     },
     info: function(item, index, button) {
       let vue = this;
@@ -250,36 +269,45 @@ $(document).ready(function () {
         console.log('Up key pressed!');
         e.preventDefault();
         if (inventoryApp.hovered_item.position > inventoryApp.min_position) {
-          var target = inventoryApp.hovered_item.position - 1;
-          var existing_item = _.find(inventoryApp.items, {position: target});
-          existing_item.position = inventoryApp.hovered_item.position
-          inventoryApp.hovered_item.position = target;
-          inventoryApp.hovered_item = _.find(inventoryApp.items, {position: target});
+          let hovered_item = inventoryApp.hovered_item;
+          let target = hovered_item.position - 1;
+          let existing_item = _.find(inventoryApp.items, {position: target});
+          if (existing_item === undefined) {
+            while (existing_item === undefined) {
+              target--;
+              existing_item = _.find(inventoryApp.items, {position: target});
+              if (existing_item) console.log("  ", target, existing_item.name, existing_item.position);
+            }
+          }
+          console.log("existing_item", existing_item.name, existing_item.position, target);
+          console.log("hovered_item", hovered_item.name, hovered_item.position);
+          existing_item.position = hovered_item.position;
+          hovered_item.position = target;
+          inventoryApp.updateItems([hovered_item, existing_item]);
         }
         break;
       case "ArrowDown":
         console.log('Down key pressed!');
         e.preventDefault();
-        if (inventoryApp.hovered_item.position < inventoryApp.max_postion) {
-          var target = inventoryApp.hovered_item.position + 1;
-          var existing_item = _.find(inventoryApp.items, function (i){
-            return i.position >= target;
-          });
-          console.log(existing_item);
-          target = existing_item.position;
-          if (existing_item) {
-            existing_item.position = inventoryApp.hovered_item.position
-            inventoryApp.hovered_item.position = target;
-            // inventoryApp.hovered_item = _.find(inventoryApp.items, {position: target});
+        console.log(inventoryApp.max_position);
+        if (inventoryApp.hovered_item.position < inventoryApp.max_position) {
+          let hovered_item = inventoryApp.hovered_item;
+          let target = hovered_item.position + 1;
+          let existing_item = _.find(inventoryApp.items, {position: target});
+          if (existing_item === undefined) {
+            while (existing_item === undefined) {
+              target++;
+              existing_item = _.find(inventoryApp.items, {position: target});
+              if (existing_item) console.log("  ", target, existing_item.name, existing_item.position);
+            }
           }
-
-          // while (existing_item === undefined) {
-          //   existing_item = _.find(inventoryApp.items, {position: target});
-          //   target = inventoryApp.hovered_item.position + 1;
-          //   console.log(target);
-
-          // }
-
+          console.log("existing_item", existing_item.name, existing_item.position, target);
+          console.log("hovered_item", hovered_item.name, hovered_item.position);
+          existing_item.position = hovered_item.position;
+          setTimeout(function(){
+            hovered_item.position = target;
+            inventoryApp.updateItems([hovered_item, existing_item]);
+          }, 500);
         }
         break;
       default:

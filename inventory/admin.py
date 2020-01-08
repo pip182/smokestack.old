@@ -1,14 +1,27 @@
 # -*- coding: utf-8 -*-
-from django.contrib import admin
-from django_summernote.admin import SummernoteModelAdmin
-from import_export.admin import ImportExportModelAdmin
-from django.utils.safestring import mark_safe
 from adminsortable.admin import SortableAdmin
-from django.forms import ModelForm
 from django import forms
+from django_summernote.admin import SummernoteModelAdmin
+from django.contrib import admin
+from django.forms import ModelForm
+from django.utils.safestring import mark_safe
+from import_export import resources
+from import_export.fields import Field
+from import_export.admin import ImportExportModelAdmin
+from import_export.widgets import ForeignKeyWidget, DecimalWidget
 # from django.db.models import BooleanField, CharField
 
 from .models import Category, Vendor, Item
+
+
+class ItemResource(resources.ModelResource):
+    category = Field(column_name='category', attribute='category',
+                     widget=ForeignKeyWidget(Category, 'name'))
+
+    class Meta:
+        model = Item
+        skip_unchanged = True
+        report_skipped = False
 
 
 class SwitchWidget(forms.Widget):
@@ -54,6 +67,9 @@ class VendorAdmin(BaseAdmin):
 @admin.register(Item)
 class ItemAdmin(BaseAdmin, SummernoteModelAdmin):
     summernote_fields = ('notes',)
+    resource_class = ItemResource
+    list_editable = BaseAdmin.list_editable + (
+        'vendor', 'category', 'code', 'current_quantity', 'minimum', 'price')
     list_display = BaseAdmin.list_display + (
         'vendor', 'category', 'code', 'current_quantity', 'minimum', 'rendered_notes',
         'price')
@@ -78,3 +94,8 @@ class ItemAdmin(BaseAdmin, SummernoteModelAdmin):
 
     # Changes column label name from "Rendered Notes" to just "Notes"
     rendered_notes.short_description = "Notes"
+
+    class Media:
+        css = {
+            "all": ("my_styles.css",)
+        }

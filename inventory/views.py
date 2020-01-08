@@ -82,13 +82,16 @@ class ItemViewSet(viewsets.ModelViewSet):
         return Response({'success': True})
 
     def update(self, request, pk=None):
+        print("Updating!", request.data)
         instance = self.get_object()
+        print(instance)
         serializer = ItemSerializer(
             instance=instance,
             data=request.data
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
+        print("DATA", instance.__dict__)
         return Response({'success': True, 'item': serializer.data})
 
 

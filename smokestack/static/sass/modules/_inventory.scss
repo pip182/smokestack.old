@@ -72,8 +72,18 @@
     }
 
     .item-move {
-      transition: transform 0.5s;
+      transition: all 0.5s;
     }
+
+    // .item-leave-active {
+    //   position: absolute;
+    //   width: 100%;
+    // }
+
+    // .row {
+    //   // transition: all 0.5s;
+    // }
+
 
   }
 

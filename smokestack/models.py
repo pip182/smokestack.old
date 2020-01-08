@@ -8,14 +8,17 @@ from adminsortable.models import SortableMixin, Sortable
 class BaseModel(SortableMixin):
     active = BooleanField(default=True, help_text="Turn off to no longer have the item available rather than deleting it.")
     name = CharField(max_length=200)
-    position = PositiveIntegerField(default=0, editable=False, db_index=True)
+    position = PositiveIntegerField(default=0, db_index=True)
 
     def __str__(self):
         return self.name
 
     @property
     def next_position(self):
-        self.position = max([i.position for i in self.__class__.objects.all()]) + 1
+        try:
+            self.position = max([i.position for i in self.__class__.objects.all()]) + 1
+        except Exception:
+            self.position = 1
         return self.position
 
     class Meta:

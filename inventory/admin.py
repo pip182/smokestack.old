@@ -68,8 +68,8 @@ class VendorAdmin(BaseAdmin):
 class ItemAdmin(BaseAdmin, SummernoteModelAdmin):
     summernote_fields = ('notes',)
     resource_class = ItemResource
-    list_editable = BaseAdmin.list_editable + (
-        'vendor', 'category', 'code', 'current_quantity', 'minimum', 'price')
+    # list_editable = BaseAdmin.list_editable + (
+    #     'vendor', 'category', 'code', 'current_quantity', 'minimum', 'price')
     list_display = BaseAdmin.list_display + (
         'vendor', 'category', 'code', 'current_quantity', 'minimum', 'rendered_notes',
         'price')

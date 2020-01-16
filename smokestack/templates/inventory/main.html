@@ -7,11 +7,14 @@
     {% include 'inventory/tab_bar.html' %}
     <b-container fluid >
       <!-- Main table element -->
+
       <b-table id="item-list" show-empty small :items="items" :fields="fields"
-        primary-key="position" :current-page="currentPage" :per-page="perPage" :filter="filter"
-        :tbody-transition-props="transProps" :filter-included-fields="filterOn"
+        primary-key="id" :filter="filter" :filter-included-fields="filterOn"
+        :tbody-transition-props="transProps"
         :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection"
-        @filtered="onFiltered" @row-hovered="rowHovered" @row-unhovered="rowUnHovered">
+        @filtered="onFiltered" @row-hovered="rowHovered" @row-unhovered="rowUnHovered"
+        v-sortable="{onUpdate: onUpdate}">
+
         <template v-slot:cell(name)="row">
           [[ row.item.name ]]
         </template>
@@ -57,22 +60,11 @@
             <b-form-checkbox-group v-model="filterOn" class="mt-1">
               <b-form-checkbox value="name">Name</b-form-checkbox>
               <b-form-checkbox value="vendor">Vendor</b-form-checkbox>
-              <b-form-checkbox value="isActive">Active</b-form-checkbox>
+              <b-form-checkbox value="active">Active</b-form-checkbox>
             </b-form-checkbox-group>
           </b-form-group>
         </b-col>
 
-        <b-col sm="5" md="6" class="my-1">
-          <b-form-group label="Per page" label-cols-sm="6" label-cols-md="4" label-cols-lg="3" label-align-sm="right"
-            label-size="sm" label-for="perPageSelect" class="mb-0">
-            <b-form-select v-model="perPage" id="perPageSelect" size="sm" :options="pageOptions"></b-form-select>
-          </b-form-group>
-        </b-col>
-
-        <b-col sm="7" md="6" class="my-1">
-          <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="fill" size="sm"
-            class="my-0"></b-pagination>
-        </b-col>
       </b-row>
 
       <!-- Info modal (NOTE: this has to be set to static for summernote to work) -->

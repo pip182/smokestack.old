@@ -3,6 +3,7 @@
 Vue.options.delimiters = ['[[', ']]'];
 Vue.config.devtools = true;
 Vue.use(VuejsDialog.main.default);
+Vue.use(vSortable);
 
 // Vue Validator
 Vue.use(VeeValidate, {

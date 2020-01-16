@@ -1,6 +1,32 @@
+// Vue.use(vuedraggable);
+
+// const createSortable = (el, options, vnode) => {
+//   // console.log(el, options, vnode);
+
+//   return Sortable.create(el, {...options,
+//     onChange(evt) {
+//       // let items = inventoryApp.items;
+//       // let high = _.nth(items, evt.oldIndex + 1),
+//       //     low = _.nth(items. evt.oldIndex - 1)
+
+//       // console.log(evt.oldIndex, evt.newIndex);
+//       // console.log("Old:", _.nth(inventoryApp.items, evt.oldIndex).name);
+//       // console.log("New:", _.nth(inventoryApp.items, evt.newIndex).name);
+
+//     }
+//   });
+// };
 
 
-// Custom validator (Not actually used right now just an example of how to get one mostly working)
+const sortable = {
+  name: 'sortable',
+  bind(el, binding, vnode) {
+    const table = el;
+    table._sortable = Sortable.create(table.querySelector("tbody"), binding.value, vnode);
+  }
+};
+
+// Custom date validator (Not actually used right now just an example of how to get one mostly working)
 VeeValidate.extend('date', {
   validate(value, args) {
     var date = dayjs(value);
@@ -26,30 +52,18 @@ var inventoryApp = new Vue({
       {key: 'position', label: "#", sortable: true},
       {key: 'name', label: 'Item Name', sortable: true, sortDirection: 'desc'},
       {key: 'current_quantity', label: 'Quantity', sortable: true, class: 'text-center'},
-      {
-        key: 'isActive',
-        label: 'is Active',
-        formatter: function (value, key, item) {
-          return value ? 'Yes' : 'No'
-        },
-        sortable: true,
-        sortByFormatted: true,
-        filterByFormatted: true
-      },
+      {key: 'active', label: 'is Active', sortable: true, sortByFormatted: true, filterByFormatted: true},
       {key: 'price', label: 'Price', sortable: true},
       {key: 'category_name', label: 'Category', sortable: true},
       {key: 'vendor_name', label: 'Vendor', sortable: true},
       {key: 'actions', label: 'Actions'}
     ],
     totalRows: 1,
-    currentPage: 1,
-    perPage: 25,
-    pageOptions: [25, 60, 100],
     sortBy: 'position',
     sortDesc: false,
     sortDirection: 'asc',
-    filter: null,
-    filterOn: [],
+    filter: '',
+    filterOn: ['active'],
     loaded: false,
     itemEditModal: {
       id: 'edit-modal', method: "", url: "",
@@ -65,6 +79,7 @@ var inventoryApp = new Vue({
     },
     hovered_row: -1,
   },
+  directives: { sortable },
   computed: {
     sortOptions: function() {
       // Create an options list from our fields
@@ -111,6 +126,18 @@ var inventoryApp = new Vue({
     }
   },
   methods: {
+    onUpdate(event) {
+      console.log(event);
+      if (event.newIndex < event.oldIndex) {
+        let shifted = _.nth(this.items, event.oldIndex);
+        shifted.position--;
+        console.log(shifted.name, event.oldIndex, shifted.position);
+
+      } else if (event.newIndex > event.oldIndex) {
+
+      }
+      console.log(_.nth(this.items, event.oldIndex).position);
+    },
     rowHovered(item, index, event) {
       this.hovered_item = item;
       // console.log("Hovered:", this.hovered_item);
@@ -121,10 +148,10 @@ var inventoryApp = new Vue({
     },
     // Gets mods available for the current item and puts them into categories.
     load: function() {
-      let vue = this,
+      var vue = this,
       ajax_items = $.get('/inventory/api/items/').done(function(data) {
         vue.items = data;
-      })
+      }),
       ajax_categories = $.get('/inventory/api/categories').done(function(data) {
         vue.categories = data;
       }),

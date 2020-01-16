@@ -49,7 +49,7 @@ class ItemViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = Item.objects.all().exclude(active=False).order_by("position")
+    queryset = Item.objects.all().order_by("position")
     serializer_class = ItemSerializer
 
     # def list(self, request):

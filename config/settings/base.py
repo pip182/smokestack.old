@@ -117,7 +117,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     'import_export',
     'django_summernote',
-    'adminsortable',
+    # 'adminsortable',
     'djmoney',
 ]
 

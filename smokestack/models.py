@@ -2,10 +2,9 @@ from django.db.models import (
     Model, CharField, PositiveIntegerField, DecimalField, IntegerField, DateField,
     ForeignKey, TextField, BooleanField, SET_NULL, CASCADE)
 from smokestack.users.models import User, Customer
-from adminsortable.models import SortableMixin, Sortable
 
 
-class BaseModel(SortableMixin):
+class BaseModel(Model):
     active = BooleanField(default=True, help_text="Turn off to no longer have the item available rather than deleting it.")
     name = CharField(max_length=200)
     position = PositiveIntegerField(default=0, db_index=True)

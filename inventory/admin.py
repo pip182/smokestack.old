@@ -94,8 +94,3 @@ class ItemAdmin(BaseAdmin, SummernoteModelAdmin):
 
     # Changes column label name from "Rendered Notes" to just "Notes"
     rendered_notes.short_description = "Notes"
-
-    class Media:
-        css = {
-            "all": ("my_styles.css",)
-        }

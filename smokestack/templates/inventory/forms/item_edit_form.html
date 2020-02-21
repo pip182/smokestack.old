@@ -69,8 +69,8 @@
         <b-col>
           <validation-provider name="Expiration" rules="date" v-slot="{ errors,valid }">
             <label for="id_expires" class="col-form-label">Expiration Date</label>
-            <b-form-input id="id_expires" type="date" v-model="item.date_expires" :state="valid"
-              aria-describedby="id_expires-live-feedback"></b-form-input>
+            <b-form-datepicker id="id_expires" type="date" v-model="item.date_expires" :state="valid"
+              aria-describedby="id_expires-live-feedback"></b-form-datepicker>
             <b-form-invalid-feedback id="id_expires-live-feedback">
               [[ errors[0] ]]
             </b-form-invalid-feedback>
